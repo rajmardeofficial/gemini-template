@@ -2,7 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const cors = require('cors');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-
+const { default: mongoose } = require("mongoose");
+const routes=require("./routes/routes")
 const app = express();
 const PORT = 8000;
 
@@ -12,7 +13,7 @@ app.use(cors());
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API);
 
 app.use(express.json());
-
+app.use(routes)
 app.post("/getResponse", async (req, res) => {
   const { destination, date, length, group, budget, activity, promptG } = req.body;
 //   console.log(promptG);
@@ -32,5 +33,8 @@ app.post("/getResponse", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+mongoose.connect(process.env.MONGO_URI)
+.then(()=>{
+  app.listen(PORT, () => console.log(`Server started on port ${PORT} and connected to database`));
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
+}).catch((e)=>console.log(e))
