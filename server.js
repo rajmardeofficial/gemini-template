@@ -3,7 +3,7 @@ const express = require("express");
 const cors = require('cors');
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { default: mongoose } = require("mongoose");
-const routes=require("./routes/routes")
+const Routes=require("./Routes/router")
 const app = express();
 const PORT = 8000;
 
@@ -13,7 +13,7 @@ app.use(cors());
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API);
 
 app.use(express.json());
-app.use(routes)
+app.use(Routes)
 app.post("/getResponse", async (req, res) => {
   const { destination, date, length, group, budget, activity, promptG } = req.body;
 //   console.log(promptG);
