@@ -3,6 +3,8 @@ const userotp = require("../models/userOtp");
 const nodemailer = require("nodemailer");
 const User=require("../models/signupSchema")
 const Onboard=require("../models/onBoardSchema")
+const bcrypt = require('bcrypt');
+
 // email config
 const tarnsporter = nodemailer.createTransport({
     service: "gmail",
@@ -53,9 +55,9 @@ exports.userOtpSend = async (req, res) => {
 
 
     try {
-        const presuer = await users.findOne({ email: email });
+        // const presuer = await users.findOne({ email: email });
 
-        if (presuer) {
+    
             const OTP = Math.floor(100000 + Math.random() * 900000);
 
             const existEmail = await userotp.findOne({ email: email });
@@ -110,9 +112,7 @@ exports.userOtpSend = async (req, res) => {
                     }
                 })
             }
-        } else {
-            res.status(400).json({ error: "This User Not Exist In our Db" })
-        }
+        
     } catch (error) {
         res.status(400).json({ error: "Invalid Details", error })
     }
@@ -132,7 +132,7 @@ exports.userOtpVerify = async(req,res)=>{
         if(otpverification.otp === otp){
             const preuser = await users.findOne({email:email});
 
-           res.status(200).json({message:"User Login Succesfully Done"});
+           res.status(200).json({message:"Correct otp!!!!"});
 
         }else{
             res.status(400).json({error:"Invalid Otp"})
@@ -150,7 +150,8 @@ exports.userLogin= async(req,res)=>{
     }
 
     try {
-       const userValid = await userdb.findOne({email:email});
+       const userValid = await users.findOne({email:email});
+       console.log(userValid)
 
         if(userValid){
 

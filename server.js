@@ -7,6 +7,8 @@ const Routes=require("./Routes/router")
 const app = express();
 const PORT = 8000;
 
+
+
 app.use(cors());
 
 // Access your API key as an environment variable
