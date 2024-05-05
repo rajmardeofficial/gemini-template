@@ -55,7 +55,7 @@ exports.userOtpSend = async (req, res) => {
 
 
     try {
-        // const presuer = await users.findOne({ email: email });
+        
 
     
             const OTP = Math.floor(100000 + Math.random() * 900000);
