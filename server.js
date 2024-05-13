@@ -19,7 +19,26 @@ const server = http.createServer(app);
 
 // Access your API key as an environment variable
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API);
+app.post("/getResponse", async (req, res) => {
+  const { destination, date, length, group, budget, activity, promptG } =
+    req.body;
+  //   console.log(promptG);
 
+  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+  const prompt = promptG;
+
+  try {
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = await response.text(); // Get the text response
+    // const json = JSON.parse(text); // Parse the text into JSON object
+    console.log(text);
+    // res.json({ itinerary: json }); // Send the JSON object in the response
+  } catch (error) {
+    console.error("Error generating content:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 // Socket.IO setup
 const io = new Server(server, {
   cors: {
