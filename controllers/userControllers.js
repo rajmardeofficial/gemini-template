@@ -273,3 +273,22 @@ exports.UploadImage = async (req, res) => {
     res.status(500).send(err.message);
   }
 };
+
+exports.GetProfileImages = async (req, res) => {
+  try {
+    const user = await users.findById(req.params.userId).populate("userPic");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const images = user.userPic.map((img) => ({
+      id: img._id,
+      name: img.name,
+      data: img.data.toString("base64"), // Convert binary data to base64
+    }));
+
+    res.status(200).json(images);
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};

@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const SECRECT_KEY = "tejas";
 
 const userSchema = new mongoose.Schema({
   fname: {
@@ -36,7 +35,7 @@ const userSchema = new mongoose.Schema({
   skills: [{ type: mongoose.Schema.Types.ObjectId, ref: "Skill" }],
   onboardData: [{ type: mongoose.Schema.Types.ObjectId, ref: "Onboard" }],
   assignData: [{ type: mongoose.Schema.Types.ObjectId, ref: "AssignMent" }],
-  userPic:[{type:mongoose.Schema.Types.ObjectId, ref: "Image" }],
+  userPic: [{ type: mongoose.Schema.Types.ObjectId, ref: "Image" }],
   tokens: [
     {
       token: {
@@ -59,7 +58,7 @@ userSchema.pre("save", async function (next) {
 // token generate
 userSchema.methods.generateAuthtoken = async function () {
   try {
-    let newtoken = jwt.sign({ _id: this._id }, SECRECT_KEY, {
+    let newtoken = jwt.sign({ _id: this._id }, process.env.JWT_TOKEN, {
       expiresIn: "1d",
     });
 

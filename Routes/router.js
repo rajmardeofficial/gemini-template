@@ -16,4 +16,6 @@ router.post(
   upload.single("image"),
   controllers.UploadImage
 );
+router.get("/users/:userId/upload",controllers.GetProfileImages)
+
 module.exports = router;
